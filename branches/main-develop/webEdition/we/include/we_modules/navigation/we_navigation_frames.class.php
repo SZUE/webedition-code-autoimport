@@ -306,7 +306,7 @@ class we_navigation_frames extends we_modules_frame{
 		$cmd1 = "document.we_form.elements.LinkID.value";
 		$cmd_doc = "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . FILE_TABLE . "','LinkID','LinkPath','','','0','',0)";
 
-		$cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . OBJECT_FILES_TABLE . "','LinkID','LinkPath','populateFolderWs','','0','objectFile',0)" : '';
+		$cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . OBJECT_FILES_TABLE . "','LinkID','LinkPath','populateFolderWs','','0','" . we_base_ContentTypes::OBJECT_FILE . "',0)" : '';
 
 		$button_doc = we_html_button::create_button(we_html_button::SELECT, $cmd_doc, '', 0, 0, '', '', false) .
 			we_html_button::create_button(we_html_button::VIEW, 'javascript:WE().layout.openToEdit("' . FILE_TABLE . '",' . $cmd1 . ',"")', '', 0, 0, '', '', false);
@@ -332,7 +332,7 @@ class we_navigation_frames extends we_modules_frame{
 				implode(',', [we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 					we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]) :
 				(defined('OBJECT_TABLE') && $this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ?
-					'folder,objectFile' :
+					implode(',', [we_base_ContentTypes::FOLDER, we_base_ContentTypes::OBJECT_FILE]) :
 					implode(',', [we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML,
 						we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH])
 			));

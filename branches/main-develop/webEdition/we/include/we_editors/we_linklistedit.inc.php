@@ -153,7 +153,7 @@ if($ok){
 		'align' => we_base_request::_(we_base_request::STRING, 'align'),
 		'alt' => $alt,
 		'img_title' => we_base_request::_(we_base_request::STRING, 'img_title'),
-		];
+	];
 
 	if(($linklist = we_base_request::_(we_base_request::SERIALIZED, 'linklist')) !== false){
 		//  set $nr to global, because it is used everywhere;
@@ -211,7 +211,7 @@ if($ok){
 		$href = '';
 		$type = we_base_link::TYPE_MAIL;
 	} else {
-		$type = $ll->getType($nr)? : we_base_link::TYPE_INT;
+		$type = $ll->getType($nr) ?: we_base_link::TYPE_INT;
 		$emaillink = '';
 	}
 	$anchor = $ll->getAnchor($nr);
@@ -262,14 +262,14 @@ if($ok){
 	$ctype = $ll->getCType($nr);
 } else {
 	$link = $we_doc->getElement($name) ? we_unserialize($we_doc->getElement($name)) : [];
-	$link = ($link ? : ['ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')]);
+	$link = ($link ?: ['ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')]);
 	$href = isset($link['href']) ? $link['href'] : '';
 	if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 		$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
 		$href = '';
 		$type = we_base_link::TYPE_MAIL;
 	} else {
-		$link = (we_unserialize($we_doc->getElement($name))? :
+		$link = (we_unserialize($we_doc->getElement($name)) ?:
 			['ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')]);
 		$href = isset($link['href']) ? $link['href'] : '';
 		if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
@@ -298,7 +298,7 @@ if($ok){
 		$cc = isset($link['cc']) ? $link['cc'] : '';
 		$subject = isset($link['subject']) ? $link['subject'] : '';
 
-		$jswin = !empty($link['jswin']) ? : '';
+		$jswin = !empty($link['jswin']) ?: '';
 		$jscenter = isset($link['jscenter']) ? $link['jscenter'] : '';
 		$jsposx = isset($link['jsposx']) ? $link['jsposx'] : '';
 		$jsposy = isset($link['jsposy']) ? $link['jsposy'] : '';
@@ -356,7 +356,8 @@ if($ok){
 	}
 }
 
-echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getElement('Charset'), '', we_html_element::jsScript(JS_DIR . 'linklistedit.js', '', ['id' => 'loadVarLinklistedit', 'data-linklist' => setDynamicVar([
+echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getElement('Charset'), '', we_html_element::jsScript(JS_DIR . 'linklistedit.js', '', [
+		'id' => 'loadVarLinklistedit', 'data-linklist' => setDynamicVar([
 			'ok' => $ok,
 			'cmd' => $cmd,
 			'trans' => $trans,
@@ -407,7 +408,7 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 			$weSuggest->setSelector(we_gui_suggest::DocSelector);
 			$weSuggest->setTable(OBJECT_FILES_TABLE);
 			$weSuggest->setWidth(300);
-			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.obj_id.value,'" . OBJECT_FILES_TABLE . "','obj_id','href_obj','','','','objectFile'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");"));
+			$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.obj_id.value,'" . OBJECT_FILES_TABLE . "','obj_id','href_obj','','','','" . we_base_ContentTypes::OBJECT_FILE . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");"));
 
 			$objLink = $weSuggest->getHTML();
 		}
@@ -573,10 +574,10 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 				'html' => $params,
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1],
-				['headline' => g_l('linklistEdit', '[link_target]'),
+			['headline' => g_l('linklistEdit', '[link_target]'),
 				'html' => $ctarget,
 				'space' => we_html_multiIconBox::SPACE_MED2]
-	];
+		];
 
 
 		if(we_base_permission::hasPerm("CAN_SEE_ACCESSIBLE_PARAMETERS")){
@@ -642,7 +643,7 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 				"ok" => 1,
 				"we_transaction" => $we_transaction,
 				"we_field" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3)
-				]) .
+			]) .
 			we_html_multiIconBox::getHTML('', $parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]'));
 			?>
 		</form>

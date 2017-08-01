@@ -128,7 +128,7 @@ abstract class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 				self::getHTMLLink($glossary) .
 				self::getHTMLTextReplacement($glossary),
 				'space' => we_html_multiIconBox::SPACE_ICON,
-				'icon'=>we_html_multiIconBox::PROP_ATTRIB,
+				'icon' => we_html_multiIconBox::PROP_ATTRIB,
 				'noline' => 1,
 			]
 		];
@@ -294,7 +294,7 @@ abstract class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 			$linkPath = $linkID = $workspaceID = $parameter = "";
 		}
 
-		$cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','link[Attributes][ObjectLinkID]','link[Attributes][ObjectLinkPath]','populateWorkspaces','','0','objectFile'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
+		$cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','link[Attributes][ObjectLinkID]','link[Attributes][ObjectLinkPath]','populateWorkspaces','','0','" . we_base_ContentTypes::OBJECT_FILE . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 
 		$weSuggest = &we_gui_suggest::getInstance();
 		$weSuggest->setAcId('objPathLink');

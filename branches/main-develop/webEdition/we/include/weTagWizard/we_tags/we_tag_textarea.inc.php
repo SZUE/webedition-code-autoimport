@@ -22,7 +22,7 @@ $height = new we_tagData_textAttribute('height', false, '');
 $bgcolor = new we_tagData_textAttribute('bgcolor', false, '');
 $class = new we_tagData_textAttribute('class', false, '');
 if(defined('FILE_TABLE')){
-	$editorcss = new we_tagData_selectorAttribute('editorcss', FILE_TABLE, 'text/css', false, '');
+	$editorcss = new we_tagData_selectorAttribute('editorcss', FILE_TABLE, we_base_ContentTypes::CSS, false, '');
 	$imagestartid = new we_tagData_selectorAttribute('imagestartid', FILE_TABLE, we_tagData_selectorAttribute::FOLDER, false, '');
 }
 $ignoredocumentcss = new we_tagData_selectAttribute('ignoredocumentcss', we_tagData_selectAttribute::getTrueFalse(), false, '');

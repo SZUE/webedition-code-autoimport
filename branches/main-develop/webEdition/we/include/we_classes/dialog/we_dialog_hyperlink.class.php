@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_hyperlink extends we_dialog_base{
+
 	function __construct($noInternals = true){
 		parent::__construct($noInternals);
 
@@ -381,7 +382,7 @@ class we_dialog_hyperlink extends we_dialog_base{
 				$weSuggest->setSelector(we_gui_suggest::DocSelector);
 				$weSuggest->setTable(OBJECT_FILES_TABLE);
 				$weSuggest->setWidth(300);
-				$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', 'we_dialog_args[objID]','we_dialog_args[objHref]', 'selector_callback,btn_edit_obj', '', '', 'objectFile'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", '', 0, 0, "", "", !we_base_permission::hasPerm("CAN_SEE_OBJECTFILES")), 10);
+				$weSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', 'we_dialog_args[objID]','we_dialog_args[objHref]', 'selector_callback,btn_edit_obj', '', '', '" . we_base_ContentTypes::OBJECT_FILE . "'," . (we_base_permission::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", '', 0, 0, "", "", !we_base_permission::hasPerm("CAN_SEE_OBJECTFILES")), 10);
 				$weSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:openToEdit(document.we_form.elements['yuiAcResultObj'].value,'" . we_base_ContentTypes::OBJECT_FILE . "','" . OBJECT_FILES_TABLE . "');", '', 0, 0, '', '', ($this->args["objID"] ? false : true), false, '_obj'));
 				$object_link = $weSuggest->getHTML();
 				/*
@@ -443,7 +444,7 @@ class we_dialog_hyperlink extends we_dialog_base{
 	</tr>' : '') . '
 </table></div>'
 			],
-				['html' => '<table class="default">
+			['html' => '<table class="default">
 	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px">' . g_l('wysiwyg', '[anchor]') . '</td>
 		<td>' . $anchor . '</td>
@@ -473,7 +474,7 @@ class we_dialog_hyperlink extends we_dialog_base{
 		<td>' . $classSelect . '</td>
 	</tr>
 </table>'],
-				['html' => '<table class="default">
+			['html' => '<table class="default">
 	<tr' . $show_accessible_class . '>
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;">' . g_l('wysiwyg', '[language]') . '</td>
 		<td><table class="default"><tr><td style="padding-left:2px;">' . $lang . '</td><td>' . $hreflang . '</td></tr></table></td>
@@ -572,8 +573,7 @@ class we_dialog_hyperlink extends we_dialog_base{
 		$attribs['href'] = $href;
 		$payload = ['attributes' => $attribs];
 
-		return we_html_tools::getHtmlTop('', '', '',
-			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('link_writeback')", [
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_cmdFrame.js', "we_cmd('link_writeback')", [
 					'id' => 'loadVarDialog_cmdFrame',
 					'data-payload' => setDynamicVar($payload)
 				]), we_html_element::htmlBody());

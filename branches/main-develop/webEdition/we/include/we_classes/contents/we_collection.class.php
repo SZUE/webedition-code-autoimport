@@ -661,7 +661,7 @@ class we_collection extends we_contents_root{
 
 			// mark the first 2 set elements of each item in an ordered way
 			$elements = ['attrib_title', 'attrib_alt', 'meta_title', 'meta_description'];
-			$hasMeta = ['application/*', 'application/x-shockwave-flash', 'audio/*', 'image/*', 'text/webedition', 'video/*'];
+			$hasMeta = [we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::AUDIO, we_base_ContentTypes::IMAGE, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::VIDEO];
 			foreach($items as $k => $v){
 				$c = 0;
 				foreach($elements as $name){

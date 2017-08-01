@@ -17,7 +17,7 @@ $publish = new we_tagData_selectAttribute('publish', we_tagData_selectAttribute:
 $searchable = new we_tagData_selectAttribute('searchable', we_tagData_selectAttribute::getTrueFalse(), false, '');
 
 $doctype = new we_tagData_sqlRowAttribute('doctype', DOC_TYPES_TABLE, true, 'DocType', '', '', '');
-$tid = (defined('TEMPLATES_TABLE') ? new we_tagData_selectorAttribute('tid', TEMPLATES_TABLE, 'text/weTmpl', false, '') : null);
+$tid = (defined('TEMPLATES_TABLE') ? new we_tagData_selectorAttribute('tid', TEMPLATES_TABLE, we_base_ContentTypes::TEMPLATE, false, '') : null);
 $categories = new we_tagData_multiSelectorAttribute('categories', CATEGORY_TABLE, '', 'Path', false, '');
 $classid = (defined('OBJECT_TABLE') ? new we_tagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '') : null);
 $protected = new we_tagData_selectAttribute('protected', we_tagData_selectAttribute::getTrueFalse(), false, 'customer');

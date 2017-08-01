@@ -18,7 +18,7 @@ if(defined('OBJECT_TABLE')){
 	$this->Attributes[] = new we_tagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '');
 }
 if(defined('OBJECT_FILES_TABLE')){
-	$this->Attributes[] = new we_tagData_selectorAttribute('id', OBJECT_FILES_TABLE, 'objectFile', false, '');
+	$this->Attributes[] = new we_tagData_selectorAttribute('id', OBJECT_FILES_TABLE, we_base_ContentTypes::OBJECT_FILE, false, '');
 }
 $this->Attributes[] = new we_tagData_textAttribute('size', false, '');
 if(defined('FILE_TABLE')){

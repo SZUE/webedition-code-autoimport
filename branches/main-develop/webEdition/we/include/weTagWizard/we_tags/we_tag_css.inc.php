@@ -14,7 +14,7 @@ $this->NeedsEndTag = false;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 if(defined('FILE_TABLE')){
-	$this->Attributes[] = new we_tagData_selectorAttribute('id', FILE_TABLE, 'text/css', true, '');
+	$this->Attributes[] = new we_tagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::CSS, true, '');
 }
 $this->Attributes[] = new we_tagData_selectAttribute('rel', [new we_tagData_option('stylesheet'),
 	new we_tagData_option('alternate stylesheet'),

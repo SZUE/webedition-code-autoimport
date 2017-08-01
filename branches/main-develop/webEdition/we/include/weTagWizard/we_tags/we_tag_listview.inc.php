@@ -87,21 +87,22 @@ $workspaceID_object = defined('OBJECT_FILES_TABLE') ? new we_tagData_multiSelect
 $categoryids = new we_tagData_multiSelectorAttribute('categoryids', CATEGORY_TABLE, '', 'ID', false, '');
 $parentid = new we_tagData_selectorAttribute('parentid', CATEGORY_TABLE, '', false, '');
 $parentidname = new we_tagData_textAttribute('parentidname', false, '');
-$contenttypes = new we_tagData_choiceAttribute('contenttypes', [new we_tagData_option(we_base_ContentTypes::WEDOCUMENT),
-	new we_tagData_option('image/*'),
-	new we_tagData_option('text/html'),
-	new we_tagData_option('text/plain'),
-	new we_tagData_option('text/xml'),
-	new we_tagData_option('text/js'),
-	new we_tagData_option('text/css'),
-	new we_tagData_option('application/*'),
-	new we_tagData_option('application/x-shockwave-flash'),
+$contenttypes = new we_tagData_choiceAttribute('contenttypes', [
+	new we_tagData_option(we_base_ContentTypes::WEDOCUMENT),
+	new we_tagData_option(we_base_ContentTypes::IMAGE),
+	new we_tagData_option(we_base_ContentTypes::HTML),
+	new we_tagData_option(we_base_ContentTypes::TEXT),
+	new we_tagData_option(we_base_ContentTypes::XML),
+	new we_tagData_option(we_base_ContentTypes::JS),
+	new we_tagData_option(we_base_ContentTypes::CSS),
+	new we_tagData_option(we_base_ContentTypes::APPLICATION),
+	new we_tagData_option(we_base_ContentTypes::FLASH),
 	], false, true, '');
 $searchable = new we_tagData_selectAttribute('searchable', we_tagData_selectAttribute::getTrueFalse(), false, '');
 $defaultname = new we_tagData_textAttribute('defaultname', false, '');
 $documentid = new we_tagData_selectorAttribute('documentid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
 $collectionid = (defined('VFILE_TABLE') ? new we_tagData_selectorAttribute('id', VFILE_TABLE, we_base_ContentTypes::COLLECTION, false, '') : null);
-$objectid = (defined('OBJECT_FILES_TABLE') ? new we_tagData_selectorAttribute('objectid', OBJECT_FILES_TABLE, 'objectFile', false, '') : null);
+$objectid = (defined('OBJECT_FILES_TABLE') ? new we_tagData_selectorAttribute('objectid', OBJECT_FILES_TABLE, we_base_ContentTypes::OBJECT_FILE, false, '') : null);
 $calendar = new we_tagData_selectAttribute('calendar', [new we_tagData_option('year'),
 	new we_tagData_option('month'),
 	new we_tagData_option('month_table'),

@@ -385,7 +385,7 @@ class we_import_wizard{
 										switch($ref->ContentType){
 											case 'weBinary':
 											case 'category':
-											case 'objectFile':
+											case we_base_ContentTypes::OBJECT_FILE:
 												$path_info = $ref->Path;
 												break;
 											case 'doctype':

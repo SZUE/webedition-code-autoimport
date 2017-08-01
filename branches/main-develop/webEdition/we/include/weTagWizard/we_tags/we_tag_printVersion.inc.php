@@ -13,7 +13,7 @@ $this->NeedsEndTag = true;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes = [
-	(defined('TEMPLATES_TABLE') ? new we_tagData_selectorAttribute('tid', TEMPLATES_TABLE, 'text/weTmpl', true, '') : null),
+	(defined('TEMPLATES_TABLE') ? new we_tagData_selectorAttribute('tid', TEMPLATES_TABLE, we_base_ContentTypes::TEMPLATE, true, '') : null),
 	new we_tagData_choiceAttribute('target', [new we_tagData_option('_top'),
 		new we_tagData_option('_parent'),
 		new we_tagData_option('_self'),

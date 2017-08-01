@@ -6,7 +6,7 @@
  * $Rev$
  * $Author$
  * $Date$
-*/
+ */
 $this->NeedsEndTag = false;
 //$this->Groups[] = 'input_tags';
 //$this->Module = '';
@@ -40,9 +40,7 @@ $wysiwyg = new we_tagData_selectAttribute('wysiwyg', we_tagData_selectAttribute:
 $buttonpos = new we_tagData_choiceAttribute('buttonpos', [new we_tagData_option('top'), new we_tagData_option('bottom')], false, false, '');
 $commands = new we_tagData_choiceAttribute('commands', we_wysiwyg_editor::getEditorCommands(true), false, true, '');
 $contextmenu = new we_tagData_choiceAttribute('contextmenu', we_wysiwyg_editor::getEditorCommands(true), false, true, '');
-if(defined('FILE_TABLE')){
-	$editorcss = new we_tagData_selectorAttribute('editorcss', FILE_TABLE, 'text/css', false, '');
-}
+$editorcss = (defined('FILE_TABLE') ? new we_tagData_selectorAttribute('editorcss', FILE_TABLE, we_base_ContentTypes::CSS, false, '') : null);
 $ignoredocumentcss = new we_tagData_selectAttribute('ignoredocumentcss', we_tagData_selectAttribute::getTrueFalse(), false, '');
 $fontnames = new we_tagData_choiceAttribute('fontnames', [new we_tagData_option('arial'),
 	new we_tagData_option('courier'),
@@ -50,7 +48,7 @@ $fontnames = new we_tagData_choiceAttribute('fontnames', [new we_tagData_option(
 	new we_tagData_option('times'),
 	new we_tagData_option('verdana'),
 	new we_tagData_option('wingdings'),
-		], false, true, '');
+	], false, true, '');
 $parentid = new we_tagData_selectorAttribute('parentid', FILE_TABLE, we_tagData_selectorAttribute::FOLDER, true, 'customer');
 $quality = new we_tagData_selectAttribute('quality', [new we_tagData_option('0'),
 	new we_tagData_option('1'),
@@ -63,7 +61,7 @@ $quality = new we_tagData_selectAttribute('quality', [new we_tagData_option('0')
 	new we_tagData_option('8'),
 	new we_tagData_option('9'),
 	new we_tagData_option('10'),
-		], false, 'customer');
+	], false, 'customer');
 $keepratio = new we_tagData_selectAttribute('keepratio', we_tagData_selectAttribute::getTrueFalse(), false, 'customer');
 $maximize = new we_tagData_selectAttribute('maximize', we_tagData_selectAttribute::getTrueFalse(), false, 'customer');
 $bordercolor = new we_tagData_textAttribute('bordercolor', false, 'customer');
@@ -74,14 +72,16 @@ $inputclass = new we_tagData_textAttribute('inputclass', false, 'customer');
 $checkboxtext = new we_tagData_textAttribute('checkboxtext', false, 'customer');
 $doc = new we_tagData_selectAttribute('doc', [new we_tagData_option('self'),
 	new we_tagData_option('top'),
-		], false, '');
+	], false, '');
 $minyear = new we_tagData_textAttribute('minyear');
 $maxyear = new we_tagData_textAttribute('maxyear');
 $thumbnail = new we_tagData_sqlRowAttribute('thumbnail', THUMBNAILS_TABLE, false, 'Name', '', '', '');
 
 
-$this->TypeAttribute = new we_tagData_typeAttribute('type', [new we_tagData_option('textinput', false, '', [$name, $property, $editable, $size, $maxlength, $value, $class, $style], [$name]),
-	new we_tagData_option('textarea', false, '', [$name, $property, $editable, $value, $cols, $rows, $autobr, $width, $height, $bgcolor, $class, $style, $hideautobr, $wysiwyg, $wysiwyg, $buttonpos, $ignoredocumentcss, $editorcss, $commands, $contextmenu, $fontnames, $classes], [$name]),
+$this->TypeAttribute = new we_tagData_typeAttribute('type', [new we_tagData_option('textinput', false, '', [$name, $property, $editable, $size, $maxlength, $value,
+		$class, $style], [$name]),
+	new we_tagData_option('textarea', false, '', [$name, $property, $editable, $value, $cols, $rows, $autobr, $width, $height, $bgcolor, $class, $style, $hideautobr,
+		$wysiwyg, $wysiwyg, $buttonpos, $ignoredocumentcss, $editorcss, $commands, $contextmenu, $fontnames, $classes], [$name]),
 	new we_tagData_option('checkbox', false, '', [$name, $property, $checked, $editable], [$name]),
 	new we_tagData_option('radio', false, '', [$name, $property, $checked, $editable, $value], [$name]),
 	new we_tagData_option('choice', false, '', [$name, $property, $editable, $size, $maxlength, $value, $values, $class, $style], [$name]),
@@ -90,12 +90,16 @@ $this->TypeAttribute = new we_tagData_typeAttribute('type', [new we_tagData_opti
 	new we_tagData_option('print', false, '', [$name, $property], [$name]),
 	new we_tagData_option('date', false, '', [$name, $property, $editable, $format, $value, $minyear, $maxyear, $hidden], [$name]),
 	new we_tagData_option('password', false, '', [[]]),
-	new we_tagData_option('img', false, 'customer', [$name, $editable, $size, $value, $width, $height, $thumbnail, $parentid, $quality, $keepratio, $maximize, $bordercolor, $checkboxstyle, $checkboxclass, $inputstyle, $inputclass, $checkboxtext], [$name, $parentid]),
-	new we_tagData_option('flashmovie', false, 'customer', [$name, $editable, $size, $value, $width, $height, $parentid, $quality, $keepratio, $maximize, $bordercolor, $checkboxstyle, $checkboxclass, $inputstyle, $inputclass, $checkboxtext], [$name, $parentid]),
-	new we_tagData_option('binary', false, 'customer', [$name, $editable, $size, $value, $parentid, $bordercolor, $checkboxstyle, $checkboxclass, $inputstyle, $inputclass, $checkboxtext], [$name, $parentid]),
+	new we_tagData_option('img', false, 'customer', [$name, $editable, $size, $value, $width, $height, $thumbnail, $parentid, $quality, $keepratio, $maximize, $bordercolor,
+		$checkboxstyle, $checkboxclass, $inputstyle, $inputclass, $checkboxtext], [$name, $parentid]),
+	new we_tagData_option('flashmovie', false, 'customer', [$name, $editable, $size, $value, $width, $height, $parentid, $quality, $keepratio, $maximize, $bordercolor,
+		$checkboxstyle, $checkboxclass, $inputstyle, $inputclass, $checkboxtext], [$name, $parentid]),
+	new we_tagData_option('binary', false, 'customer', [$name, $editable, $size, $value, $parentid, $bordercolor, $checkboxstyle, $checkboxclass, $inputstyle, $inputclass,
+		$checkboxtext], [$name, $parentid]),
 	new we_tagData_option('country', false, '', [$name, $size, $class, $style, $doc, $value], [$name]),
 	new we_tagData_option('language', false, '', [$name, $size, $class, $style, $doc, $value], [$name])], true, '');
 
 $this->Attributes = [$name, $property, $checked, $editable, $xml, $removefirstparagraph, $size, $maxlength, $format, $value, $values, $hidden, $currentdate, $cols,
-	$rows, $pure, $autobr, $width, $height, $bgcolor, $class, $style, $wysiwyg, $buttonpos, $ignoredocumentcss, $editorcss, $commands, $contextmenu, $classes, $fontnames, $parentid, $quality, $keepratio, $maximize, $thumbnail, $bordercolor,
+	$rows, $pure, $autobr, $width, $height, $bgcolor, $class, $style, $wysiwyg, $buttonpos, $ignoredocumentcss, $editorcss, $commands, $contextmenu, $classes, $fontnames,
+	$parentid, $quality, $keepratio, $maximize, $thumbnail, $bordercolor,
 	$checkboxstyle, $checkboxclass, $inputstyle, $inputclass, $checkboxtext, $doc, $minyear, $maxyear];

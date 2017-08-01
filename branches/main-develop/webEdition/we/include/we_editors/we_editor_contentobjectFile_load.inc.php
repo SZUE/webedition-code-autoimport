@@ -47,7 +47,6 @@ $charset = (!empty($we_doc->elements["Charset"]["dat"]) ? //	send charset which 
 	$we_doc->elements["Charset"]["dat"] :
 	DEFAULT_CHARSET);
 
-//we_html_tools::headerCtCharset('text/html', $charset);
 //	---> Loading the Stylesheets
 $header = '';
 if($we_doc->CSS){

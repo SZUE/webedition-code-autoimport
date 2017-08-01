@@ -29,7 +29,7 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 	private $iconFile;
 	private $iconFolder;
 
-	public function __construct($width, $ids, $cmd_del, $addbut, $cmd_edit, $iconFolder = 'folder', $iconFile = 'application/*'){
+	public function __construct($width, $ids, $cmd_del, $addbut, $cmd_edit, $iconFolder = we_base_ContentTypes::FOLDER, $iconFile = we_base_ContentTypes::APPLICATION){
 		parent::__construct($width, $ids, $cmd_del, $addbut);
 		$this->iconFile = $iconFile;
 		$this->iconFolder = $iconFolder;
