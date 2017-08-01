@@ -689,7 +689,6 @@ class we_document extends we_contents_root{
 	}
 
 	function we_rewrite(){
-		$this->RebuildDate = time();
 		return $this->i_writeDocument();
 	}
 
@@ -1513,7 +1512,7 @@ class we_document extends we_contents_root{
 			);
 
 		$this->Filehash = (file_exists($usepath) && is_file($usepath) ? sha1_file($usepath) : '');
-		$this->i_savePersistentSlotsToDB(['Filehash', 'RebuildDate']);
+		$this->i_savePersistentSlotsToDB(['Filehash']);
 	}
 
 	public static function parseInternalLinks(&$text, $pid, $path = '', $returnAllFileIDs = false){

@@ -18,7 +18,6 @@ CREATE TABLE ###TBLPREFIX###tblFile (
 	ContentType enum('','image/*','text/html','text/webedition','text/js','text/css','text/htaccess','text/plain','folder','application/x-shockwave-flash','application/*','text/xml','video/*','audio/*') NOT NULL default '',
 	CreationDate int unsigned NOT NULL default '0',
 	ModDate int unsigned NOT NULL default '0',
-	RebuildDate int unsigned NOT NULL default '0',
 	Path varchar(800) NOT NULL default '',
 	Filehash char(40) NOT NULL default '',
 	TemplateID int unsigned NOT NULL default '0',
@@ -56,3 +55,5 @@ CREATE TABLE ###TBLPREFIX###tblFile (
 ###ONCOL(listview,###TBLPREFIX###tblFile) UPDATE ###TBLPREFIX###tblFile SET viewType="icons" WHERE listview=1;###
 /* query separator */
 ###UPDATEDROPCOL(listview,###TBLPREFIX###tblFile)###
+/* query separator */
+###UPDATEDROPCOL(RebuildDate,###TBLPREFIX###tblFile)###

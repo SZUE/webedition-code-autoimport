@@ -60,9 +60,6 @@ abstract class we_contents_root extends we_contents_base{
 	/* Modification Date as UnixTimestamp  */
 	var $ModDate = 0;
 
-	/* Rebuild Date as UnixTimestamp  */
-	var $RebuildDate = 0;
-
 	/* Flag which is set, when the file is a folder  */
 	var $IsFolder = 0;
 
@@ -97,7 +94,7 @@ abstract class we_contents_root extends we_contents_base{
 		parent::__construct();
 		$this->CreationDate = time();
 		$this->ModDate = time();
-		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'RestrictOwners', 'WebUserID', 'LockUser', 'LangLinks');
+		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'IsFolder', 'ContentType', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'RestrictOwners', 'WebUserID', 'LockUser', 'LangLinks');
 	}
 
 	public function makeSameNew(array $keep = []){
@@ -215,7 +212,6 @@ abstract class we_contents_root extends we_contents_base{
 				case 'wasUpdate':
 				case 'InWebEdition':
 				case 'CreationDate':
-				case 'RebuildDate':
 				case 'CopyID':
 				case 'hidePages':
 				case 'controlElement':
@@ -861,7 +857,6 @@ abstract class we_contents_root extends we_contents_base{
 			$this->ModDate = time();
 			$this->ModifierID = empty($GLOBALS['we']['Scheduler_active']) && !empty($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 		}
-		$this->RebuildDate = time();
 		if(!parent::we_save($resave)){
 			return false;
 		}
