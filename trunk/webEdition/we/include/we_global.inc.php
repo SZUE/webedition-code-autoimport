@@ -1234,5 +1234,5 @@ function updateAvailable(){
 }
 
 function getScriptName(){
-	return isset($_SERVER['SCRIPT_URL']) ? $_SERVER['SCRIPT_URL'] : $_SERVER['SCRIPT_NAME'];
+	return isset($_SERVER['SCRIPT_FILENAME']) ? str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']) : $_SERVER['SCRIPT_NAME'];
 }
