@@ -85,11 +85,11 @@ function we_tag_formfield(array $attribs){
 	}
 
 	if(!empty($GLOBALS['we_editmode'])){
-		$tmp_select = '<select name="' . $nameprefix . 'fftype]" onchange="setScrollTo();we_cmd(\'reload_editpage\');">' . "\n";
+		$tmp_select = '';
 		foreach($types as $k){
 			$tmp_select .= '<option value="' . $k . '"' . (($k == $type_sel) ? ' selected="selected"' : '') . '>' . $k . '</option>';
 		}
-		$tmp_select .= '</select>';
+
 		$tbl = '<table style="padding:4px;border:0px; color: black;" class="weEditTable weEditmodeStyle">
 <colgroup>
 <col style="width:8em;color: black;padding-right:1ex;"/>
@@ -97,11 +97,11 @@ function we_tag_formfield(array $attribs){
 </colgroup>
 	<tr>
 		<td>' . g_l('global', '[name]') . ':</td>
-		<td><input type="text" name="' . $nameprefix . 'ffname]" value="' . $ffname . '" required="required" pattern="[^\[\]. ]+"/></td>
+		<td><input type="text" name="' . $nameprefix . 'ffname]" style="width:20em" value="' . $ffname . '" required="required" pattern="[^\[\]. ]+"/></td>
 	</tr>
 	<tr>
 		<td>' . g_l('global', '[type]') . ':</td>
-		<td>' . $tmp_select . '</td>
+		<td><select name="' . $nameprefix . 'fftype]" onchange="setScrollTo();we_cmd(\'reload_editpage\');">' . $tmp_select . '</select></td>
 	</tr>';
 
 		if($ff){
@@ -131,7 +131,7 @@ function we_tag_formfield(array $attribs){
 					if((!isset($m['value'])) && count($default) == 1){
 						$val = $default[0];
 					}
-					$tbl .= '<input type="text" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" size="7"' . ($val ? ' value="' . $val . '"' : '') . ' />' . $valselect;
+					$tbl .= '<input type="text" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" style="width:20em" ' . ($val ? ' value="' . $val . '"' : '') . ' />' . $valselect;
 				} else {
 					if(count($default) > 1){
 						$val = $GLOBALS['we_doc']->getElement($name, 'ff_' . $type_sel . '_' . $f);
@@ -159,11 +159,11 @@ function we_tag_formfield(array $attribs){
 			case 'select':
 				$tbl .= '	<tr>
 		<td>' . g_l('global', '[values]') . ':</td>
-		<td><textarea name="' . $nameprefix . 'ffvalues]" cols="30" rows="5">' . $GLOBALS['we_doc']->getElement($name, 'ffvalues') . '</textarea></td>
+		<td><textarea name="' . $nameprefix . 'ffvalues]" style="width:20em;height:5ex;">' . $GLOBALS['we_doc']->getElement($name, 'ffvalues') . '</textarea></td>
 	</tr>
 	<tr>
 		<td>' . g_l('global', '[default]') . ':</td>
-		<td><input type="text" name="' . $nameprefix . 'ffdefault]" value="' . $GLOBALS['we_doc']->getElement($name, 'ffdefault') . '" /></td>
+		<td><input type="text" name="' . $nameprefix . 'ffdefault]" style="width:20em" value="' . $GLOBALS['we_doc']->getElement($name, 'ffdefault') . '" /></td>
 	</tr>';
 				break;
 			case 'file':
